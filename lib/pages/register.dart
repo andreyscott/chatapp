@@ -1,67 +1,44 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:chatapp/services/auth/auth_service.dart';
 import 'package:chatapp/components/mybutton.dart';
 import 'package:chatapp/components/text_field.dart';
-import 'package:chatapp/pages/homepage.dart';
+// import 'package:chatapp/pages/homepage.dart';
 import 'package:flutter/material.dart';
 
-class RegisterPage extends StatefulWidget {
-  // final void Function()? onTap;
+class RegisterPage extends StatelessWidget {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _pwController = TextEditingController();
+  final TextEditingController _confirmPwController = TextEditingController();
+  final void Function()? onTap;
 
-  const RegisterPage({
-    super.key,
-    // required this.onTap,
-  });
+  RegisterPage({super.key, required this.onTap});
 
-  @override
-  State<RegisterPage> createState() => _RegisterPageState();
-}
+  void register(BuildContext context) async {
+    final _auth = AuthService();
 
-class _RegisterPageState extends State<RegisterPage> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
-
-  //navigate to home page
-  /*void navigateToHome() {
-    Navigator.push(
-      context, MaterialPageRoute(
-        builder: (context) => const HomePage()
-      )
-    );
-  }*/
-
-  //register method
-  void register() async {
-    //   //get auth service
-    //   final authService = AuthService();
-
-    //   //check if password and confirm password match, create user
-    //   if (passwordController.text == confirmPasswordController.text) {
-    //     try {
-    //       //sign up user
-    //       await authService.signUpWithEmailAndPassword(
-    //           emailController.text, passwordController.text);
-    //       //navigate to home page
-    //       Navigator.push(
-    //           context, MaterialPageRoute(builder: (context) => const HomePage()));
-    //     }
-    //     //catch error
-    //     catch (e) {
-    //       showDialog(
-    //           context: context,
-    //           builder: (context) => AlertDialog(
-    //                 title: Text(e.toString()),
-    //               ));
-    //     }
-    //   }
-    //   //if password and confirm password do not match
-    //   else {
-    //     showDialog(
-    //         context: context,
-    //         builder: (context) => const AlertDialog(
-    //               title: Text('Passwords do not match'),
-    //             ));
-    //   }
+    if (_pwController.text == _confirmPwController.text) {
+      try {
+        await _auth.signInWithEmailPassword(
+          _emailController.text,
+          _pwController.text,
+        );
+      } catch (e) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(e.toString()),
+          ),
+        );
+      }
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(
+          title: Text("Passwords don't match!"),
+        ),
+      );
+    }
   }
 
   @override
@@ -72,85 +49,62 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            //logo
             Icon(
-              Icons.lock_open_rounded,
-              size: 72,
-              color: Theme.of(context).colorScheme.inversePrimary,
+              Icons.message,
+              size: 60,
+              color: Theme.of(context).colorScheme.primary,
             ),
-            const SizedBox(height: 25),
-
-            //message,app slogan
+            const SizedBox(height: 50),
             Text(
-              'Let\'s create an account for you',
+              "Let's create an account for you",
               style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
                 fontSize: 16,
-                color: Theme.of(context).colorScheme.inversePrimary,
               ),
             ),
             const SizedBox(height: 25),
-
-            //email textfield
             MyTextField(
-              controller: emailController,
-              hintText: 'Email',
+              hintText: "Email",
               obscureText: false,
+              controller: _emailController,
             ),
             const SizedBox(height: 10),
-
-            //password textfield
             MyTextField(
-              controller: passwordController,
-              hintText: 'Password',
+              hintText: "Password",
               obscureText: true,
+              controller: _pwController,
             ),
             const SizedBox(height: 10),
-            //confirm password textfield
             MyTextField(
-              controller: confirmPasswordController,
-              hintText: 'Confirm Password',
+              hintText: "Confirm password",
               obscureText: true,
+              controller: _confirmPwController,
             ),
             const SizedBox(height: 25),
-            //sign in button
             MyButton(
-              onTap: register,
-              text: 'Sign Up',
+              text: "Register",
+              onTap: () => register(context),
             ),
-
             const SizedBox(height: 25),
-
-            //not a member? register now
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'already have an account?',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.inversePrimary,
-                  ),
-                ),
-                const SizedBox(
-                  width: 4,
+                  "Already have an account?",
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.primary),
                 ),
                 GestureDetector(
-                  // onTap: widget.onTap,
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const Homepage()));
-                  },
+                  onTap: onTap,
                   child: Text(
-                    'Login now',
+                    " Login now",
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.inversePrimary,
-                      fontWeight: FontWeight.bold,
-                    ),
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary),
                   ),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),

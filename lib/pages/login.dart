@@ -1,89 +1,93 @@
 import 'package:chatapp/components/mybutton.dart';
 import 'package:chatapp/components/text_field.dart';
-import 'package:chatapp/pages/register.dart';
+import 'package:chatapp/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
-  LoginPage({
-    super.key,
-  });
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _pwController = TextEditingController();
+  final void Function()? onTap;
 
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  LoginPage({super.key, required this.onTap});
 
-  void login() {}
+  void login(BuildContext context) async {
+    final authService = AuthService();
+
+    try {
+      await authService.signInWithEmailPassword(
+        _emailController.text,
+        _pwController.text,
+      );
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(e.toString()),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Center(
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          // logo
-          const Icon(
-            Icons.message,
-            size: 55,
-          ),
-          const SizedBox(
-            height: 45,
-          ),
-
-          Text(
-            "Chatter App",
-            style: TextStyle(
-                fontWeight: FontWeight.w400,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.message,
+              size: 60,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            const SizedBox(height: 50),
+            Text(
+              "Welcome back, you've been missed!",
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
                 fontSize: 16,
-                color: Theme.of(context).colorScheme.primary),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-
-          // email here
-
-          MyTextField(
-              controller: emailController,
-              hintText: 'Email',
-              obscureText: false),
-
-          const SizedBox(
-            height: 10,
-          ),
-
-          MyTextField(
-              controller: passwordController,
-              hintText: 'Password',
-              obscureText: true),
-          const SizedBox(
-            height: 25,
-          ),
-          MyButton(text: 'LOGIN', onTap: login),
-
-          const SizedBox(
-            height: 25,
-          ),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('Not a member?'),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const RegisterPage()));
-                },
-                child: Text(
-                  'Register Now',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.primary),
-                ),
               ),
-            ],
-          )
-        ]),
+            ),
+            const SizedBox(height: 25),
+            MyTextField(
+              hintText: "Email",
+              obscureText: false,
+              controller: _emailController,
+            ),
+            const SizedBox(height: 10),
+            MyTextField(
+              hintText: "Password",
+              obscureText: true,
+              controller: _pwController,
+            ),
+            const SizedBox(height: 25),
+            MyButton(
+              text: "Login",
+              onTap: () => login(context),
+            ),
+            const SizedBox(height: 25),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Not a member?",
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.primary),
+                ),
+                GestureDetector(
+                  onTap: onTap,
+                  child: Text(
+                    " Register now",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
