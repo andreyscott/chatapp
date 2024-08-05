@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "27780016152",
+    "project_id": "abacus-ext",
+    "storage_bucket": "abacus-ext.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:27780016152:android:748e05dd67197549c0fb6d",
+        "android_client_info": {
+          "package_name": "com.example.chatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "27780016152-h1i8gqqcl7ab6l6kb2umtevi4o9epcv4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABrgEcH28i1585fa_7GmCejZcCJ_jndNY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "27780016152-h1i8gqqcl7ab6l6kb2umtevi4o9epcv4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
