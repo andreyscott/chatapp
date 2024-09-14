@@ -43,7 +43,7 @@ class LoginPage extends StatelessWidget {
             ),
             const SizedBox(height: 50),
             Text(
-              "Welcome back, you've been missed!",
+              "Welcome back, you've been missed",
               style: TextStyle(
                 color: Theme.of(context).colorScheme.primary,
                 fontSize: 16,
@@ -78,7 +78,7 @@ class LoginPage extends StatelessWidget {
                 GestureDetector(
                   onTap: onTap,
                   child: Text(
-                    " Register now",
+                    "Register now",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).colorScheme.primary),
